@@ -7,6 +7,8 @@ Based on mariadb-backup (xtrabackup)
 
 ## Usage
 1. create volume
+
+
 You need to create volume to mount `/var/lib/mysql` on remote database host machine in the container in order to make `xtrabackup` work properly. For example you can use rclone docker plugin along with sftp to create a docker volume
 
 With `docker volume create` command:
@@ -26,7 +28,7 @@ volume:
       host: $REMOTE_HOST
 ```
 
-2. run container
+2. configure environment variables
 You need to set environment variables to configure the backup process. For example:
 ```env
 MARIADB_HOST=
@@ -42,3 +44,20 @@ CREATE USER 'mariabackup'@'localhost' IDENTIFIED BY 'mypassword';
 GRANT RELOAD, PROCESS, LOCK TABLES, BINLOG MONITOR ON *.* TO 'mariabackup'@'localhost';
 ```
 
+3. run the container
+
+You should mount `/backup` directory to store the backup files.
+
+```bash
+docker run -d --name mariadb-backup --env-file .env -v mysql-backup:/var/lib/mysql -v /PATH/TO/BACKUP:/backup ghcr.io/wintbiit/backups-mariadb
+```
+
+```yaml
+services:
+  mariadb-backup:
+    image: ghcr.io/wintbiit/backups-mariadb
+    env_file: .env
+    volumes:
+      - mysql-backup:/var/lib/mysql
+      - ./backup:/backup
+```
