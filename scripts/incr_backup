@@ -1,0 +1,23 @@
+#!/bin/bash
+
+date=$(date +%Y%m%d%H%M%S)
+
+# if BACKUP_PARALLEL is not set, set it to 4
+if [ -z "$BACKUP_PARALLEL" ]; then
+  BACKUP_PARALLEL=4
+fi
+
+last_incr_dir () {
+    # find latest incremental backup dir matching the pattern
+    dir=$(ls -td /backup/incr/* 2>/dev/null | head -n 1)
+    if [ -z "$dir" ]; then
+        echo "/backup/full"
+    else
+        echo "$dir"
+    fi
+}
+
+lastIncr=$(last_incr_dir)
+echo "Performing incremental backup, date: $date, based on $lastIncr"
+
+mariadb-backup --backup --target-dir /backup/incr/$date --incremental-basedir $lastIncr --parallel=$BACKUP_PARALLEL

@@ -36,6 +36,7 @@ echo "CRON: $CRON"
 
 mariadb --version
 mariadb-backup --version
+mariadb-dump --version
 
 # write mariadb credentials as option file
 rm -rf /etc/mysql
@@ -45,8 +46,9 @@ host=$MARIADB_HOST
 port=$MARIADB_PORT
 user=$MARIADB_USER
 password=$MARIADB_PASSWORD
+skip-ssl=true
 
-[mysql]
+[mariadb]
 skip-ssl=true
 EOF
 
@@ -60,7 +62,7 @@ fi
 mkdir full incr sql 2>/dev/null
 
 # set cron job
-echo "$CRON /backup.sh" > /etc/cron.d/backup
+echo "$CRON root /backup.sh" > /etc/cron.d/backup
 
 echo "Next run: $(crontab -l | grep -v '^#')"
 

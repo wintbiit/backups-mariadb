@@ -17,8 +17,11 @@ RUN apt-get update && apt-get install -y \
 
 COPY entrypoint.sh /entrypoint.sh
 COPY backup.sh /backup.sh
+COPY ./scripts /scripts
 
-RUN chmod +x /entrypoint.sh /backup.sh
+RUN chmod +x /entrypoint.sh /backup.sh /scripts/* \
+    && ln -s /scripts/* /usr/local/bin/ \
+    && mkdir /backup
 
 WORKDIR /backup
 
