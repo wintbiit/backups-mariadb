@@ -54,8 +54,10 @@ fi
 
 mkdir full incr sql
 
-# set cron job (env: Debian bookworm)
-echo "$CRON /entrypoint.sh" > /etc/cron.d/backup
+# set cron job
+echo "$CRON /backup.sh" > /etc/crontabs/root
+
+echo "Next run: $(crontab -l | grep -v '^#')"
 
 # start cron
-cron -f
+crond -f
