@@ -34,10 +34,18 @@ echo "MARIADB_PORT: $MARIADB_PORT"
 echo "MARIADB_USER: $MARIADB_USER"
 echo "CRON: $CRON"
 mysql --version
-xtrabackup -v
+mariabackup -v
 
-# write mariadb credentials as option fileW
-cat <<EOF > /etc/my.cnf
+# write mariadb credentials as option file
+echo """
+[client]
+host=$MARIADB_HOST
+port=$MARIADB_PORT
+user=$MARIADB_USER
+password=$MARIADB_PASSWORD
+""" > /etc/my.cnf.d/mariabackup.cnf
+
+cat <<EOF > /etc/my.cnf.d/mariabackup.cnf
 [client]
 host=$MARIADB_HOST
 port=$MARIADB_PORT
