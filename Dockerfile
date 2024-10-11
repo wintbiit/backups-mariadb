@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 RUN wget https://downloads.percona.com/downloads/Percona-XtraBackup-8.4/Percona-XtraBackup-8.4.0-1/binary/debian/bookworm/x86_64/percona-xtrabackup-84_8.4.0-1-1.bookworm_amd64.deb && \
-    dpkg -i percona-xtrabackup-84_8.4.0-1-1.bookworm_amd64.deb && \
+    apt-get install -y ./percona-xtrabackup-84_8.4.0-1-1.bookworm_amd64.deb && \
     rm -f percona-xtrabackup-84_8.4.0-1-1.bookworm_amd64.deb
 
 COPY entrypoint.sh /entrypoint.sh
