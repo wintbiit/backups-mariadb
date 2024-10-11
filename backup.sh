@@ -27,7 +27,7 @@ date=$(date +%Y%m%d%H%M%S)
 
 full_backup () {
     echo "Performing full backup, backup dir: /backup/full"
-    mariabackup --backup --target-dir /backup/full --parallel=4 --compress --compress-threads=4 --rsync
+    mariadb-backup --backup --target-dir /backup/full --parallel=4 --compress --compress-threads=4 --rsync
 }
 
 last_incr_dir () {
@@ -43,12 +43,12 @@ last_incr_dir () {
 incr_backup () {
     lastIncr=$(last_incr_dir)
     echo "Performing incremental backup based on $lastIncr"
-    mariabackup --backup --target-dir /backup/incr/$date --incremental-basedir $lastIncr --parallel=4 --compress --compress-threads=4 --rsync
+    mariadb-backup --backup --target-dir /backup/incr/$date --incremental-basedir $lastIncr --parallel=4 --compress --compress-threads=4 --rsync
 }
 
 sqldump () {
     echo "Performing SQL dump"
-    mysqldump -h $MARIADB_HOST -u $MARIADB_USER -p$MARIADB_PASSWORD --all-databases > /backup/sql/$date.sql
+    mariadbdump -h $MARIADB_HOST -u $MARIADB_USER -p$MARIADB_PASSWORD --all-databases > /backup/sql/$date.sql
 }
 
 # mount sshfs

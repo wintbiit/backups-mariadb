@@ -33,8 +33,9 @@ echo "MARIADB_HOST: $MARIADB_HOST"
 echo "MARIADB_PORT: $MARIADB_PORT"
 echo "MARIADB_USER: $MARIADB_USER"
 echo "CRON: $CRON"
-mysql --version
-mariabackup -v
+
+mariadb --version
+mariadb-backup --version
 
 # write mariadb credentials as option file
 rm -rf /etc/mysql
@@ -44,16 +45,19 @@ host=$MARIADB_HOST
 port=$MARIADB_PORT
 user=$MARIADB_USER
 password=$MARIADB_PASSWORD
+
+[mysql]
+skip-ssl=true
 EOF
 
 # test mariadb connection
-conn=$(mysql -e "SELECT 1" 2>&1)
+conn=$(mariadb -e "SELECT 1" 2>&1)
 if [ $? -ne 0 ]; then
   echo "Failed to connect to MariaDB: $conn"
   exit 1
 fi
 
-mkdir full incr sql
+mkdir full incr sql 2>/dev/null
 
 # set cron job
 echo "$CRON /backup.sh" > /etc/cron.d/backup
