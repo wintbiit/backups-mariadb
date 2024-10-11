@@ -37,15 +37,8 @@ mysql --version
 mariabackup -v
 
 # write mariadb credentials as option file
-echo """
-[client]
-host=$MARIADB_HOST
-port=$MARIADB_PORT
-user=$MARIADB_USER
-password=$MARIADB_PASSWORD
-""" > /etc/my.cnf.d/mariabackup.cnf
-
-cat <<EOF > /etc/my.cnf.d/mariabackup.cnf
+rm -rf /etc/mysql
+cat <<EOF > /etc/my.cnf
 [client]
 host=$MARIADB_HOST
 port=$MARIADB_PORT
@@ -63,9 +56,9 @@ fi
 mkdir full incr sql
 
 # set cron job
-echo "$CRON /backup.sh" > /etc/crontabs/root
+echo "$CRON /backup.sh" > /etc/cron.d/backup
 
 echo "Next run: $(crontab -l | grep -v '^#')"
 
 # start cron
-crond -f
+cron -f
