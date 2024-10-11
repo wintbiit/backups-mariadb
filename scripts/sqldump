@@ -3,4 +3,5 @@
 date=$(date +%Y%m%d%H%M%S)
 
 echo "Performing SQL dump"
+mkdir -p /backup/sql/$date
 mariadb-dump --all-databases --compress --dir /backup/sql/$date
