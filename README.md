@@ -25,6 +25,8 @@ volume:
       type: sftp
       user: backup
       pass: backup
+      # or use ssh key
+      key: /path/to/ssh/key
       host: $REMOTE_HOST
 ```
 
@@ -35,7 +37,7 @@ MARIADB_HOST=
 MARIADB_PORT=
 MARIADB_USER=
 MARIADB_PASSWORD=
-CRON=
+CRON=0 3 * * *
 ```
 
 **Note**: According to [mariabackup docs](https://mariadb.com/kb/en/mariabackup-overview/), the user should have the following privileges:

@@ -10,6 +10,4 @@ RUN chmod +x /entrypoint.sh /backup.sh
 
 WORKDIR /backup
 
-RUN mkdir full incr sql
-
 ENTRYPOINT ["/entrypoint.sh"]

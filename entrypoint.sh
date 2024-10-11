@@ -45,12 +45,22 @@ user=$MARIADB_USER
 password=$MARIADB_PASSWORD
 """ > /etc/my.cnf.d/mariabackup.cnf
 
+cat <<EOF > /etc/my.cnf.d/mariabackup.cnf
+[client]
+host=$MARIADB_HOST
+port=$MARIADB_PORT
+user=$MARIADB_USER
+password=$MARIADB_PASSWORD
+EOF
+
 # test mariadb connection
 conn=$(mysql -e "SELECT 1" 2>&1)
 if [ $? -ne 0 ]; then
   echo "Failed to connect to MariaDB: $conn"
   exit 1
 fi
+
+mkdir full incr sql
 
 # set cron job
 echo "$CRON /backup.sh" > /etc/crontabs/root
