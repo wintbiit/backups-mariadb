@@ -25,14 +25,6 @@ fi
 
 date=$(date +%Y%m%d%H%M%S)
 
-red_color() {
-    # 
-}
-
-reset_color() {
-
-}
-
 full_backup () {
     echo "Performing full backup, backup dir: /backup/full"
     mariabackup --backup --target-dir /backup/full --parallel=4 --compress --compress-threads=4 --rsync
