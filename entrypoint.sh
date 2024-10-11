@@ -61,10 +61,10 @@ fi
 
 mkdir full incr sql 2>/dev/null
 
-# set cron job
-echo "$CRON root /backup.sh" > /etc/cron.d/backup
-
-echo "Next run: $(crontab -l | grep -v '^#')"
+# set cron job on debain based systems
+echo "$CRON /usr/local/bin/backup.sh" > /etc/cron.d/backup
+chmod 0644 /etc/cron.d/backup
+crontab /etc/cron.d/backup
 
 # start cron
 cron -f
