@@ -1,0 +1,11 @@
+#!/bin/bash
+
+date=$(date +%Y%m%d%H%M%S)
+
+# if BACKUP_PARALLEL is not set, set it to 4
+if [ -z "$BACKUP_PARALLEL" ]; then
+  BACKUP_PARALLEL=4
+fi
+
+echo "Performing full backup, date: $date, backup dir: /backup/full"
+mariadb-backup --backup --target-dir /backup/full --parallel=$BACKUP_PARALLEL
